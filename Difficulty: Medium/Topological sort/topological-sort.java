@@ -56,31 +56,35 @@ class Main {
 
 
 class Solution {
-     public static void dfs(ArrayList<ArrayList<Integer>> adj,int node,Stack<Integer> st,int[] vis){
-         vis[node]=1;
-         for(int i:adj.get(node))
-        {
-            if(vis[i]==0){
-                dfs(adj,i,st,vis);
-            }
-        }
-        st.push(node);
-     }
+   
     static ArrayList<Integer> topologicalSort(ArrayList<ArrayList<Integer>> adj) {
         int v=adj.size();
-    int [] vis=new int[v];
-    Stack<Integer>st=new Stack<>();
-    for(int i=0;i<v;i++){
-        if(vis[i]==0){
-            dfs(adj,i,st,vis);
+    int [] indeg=new int[v];
+    for(int i=0;i<=v-1;i++){
+        for(int it:adj.get(i)){
+            indeg[it]++;
         }
     }
-    ArrayList<Integer> arr=new ArrayList<>();
-    int n=0;
-   while(!st.isEmpty()){
-       arr.add(st.peek());
-       st.pop();
-   }
-   return arr;
+    Queue<Integer> q=new LinkedList<>();
+    for(int i=0;i<v;i++){
+        if(indeg[i]==0){
+           q.add(i) ;
+        }
     }
+    ArrayList<Integer> topo=new ArrayList<>();
+    int k=0;
+    while(!q.isEmpty()){
+        int node=q.peek();
+        q.remove();
+        for(int it:adj.get(node)){
+            indeg[it]--;
+            if(indeg[it]==0){
+                q.add(it);
+            }
+        }
+        topo.add(node);
+        
+    }
+    return topo;
+}
 }
