@@ -33,32 +33,37 @@ class DriverClass {
 /*Complete the function below*/
 
 class Solution {
-    private boolean cycle(int node,int v,ArrayList<ArrayList<Integer>> adj,int []vis,int []pathvis){
-        vis[node]=1;
-        pathvis[node]=1;
-        for(int it:adj.get(node)){
-            if(vis[it]==0){
-                if(cycle(it,v,adj,vis,pathvis)==true){
-                    return true;
-                }
-            }else if(vis[it]==1&&pathvis[it]==1){
-                return true;
-            }
-        }
-        pathvis[node]=0;
-        return false;
-    }
+    
     
     public boolean isCyclic(int v, ArrayList<ArrayList<Integer>> adj) {
-        int [] vis=new int [v];
-        int [] pathvis=new int[v];
-        for(int i=0;i<=v-1;i++){
-            if(vis[i]==0){
-                if(cycle(i,v,adj,vis,pathvis)==true){
-                    return true;
-                }
+    
+      
+    int [] indeg=new int[v];
+    for(int i=0;i<=v-1;i++){
+        for(int it:adj.get(i)){
+            indeg[it]++;
+        }
+    }
+    Queue<Integer> q=new LinkedList<>();
+    for(int i=0;i<v;i++){
+        if(indeg[i]==0){
+           q.add(i) ;
+        }
+    }
+    ArrayList<Integer> topo=new ArrayList<>();
+    int k=0;
+    while(!q.isEmpty()){
+        int node=q.peek();
+        q.remove();
+        for(int it:adj.get(node)){
+            indeg[it]--;
+            if(indeg[it]==0){
+                q.add(it);
             }
         }
-        return false;
+        topo.add(node);
+    }
+    if(topo.size()==v) return false;
+    return true;
     }
 }
