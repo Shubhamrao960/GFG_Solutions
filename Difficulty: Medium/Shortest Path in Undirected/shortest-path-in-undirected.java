@@ -60,12 +60,10 @@ class Solution {
                 for(int it:adj.get(node)){
                     if(dist[it]>dist[node]+1){
                         dist[it]=dist[node]+1;
-                    }
-                    if(vis[it]==0){
-                        vis[it]=1;
+                       
                         q.add(it);
-                        
-                    }
+                    }    
+                    
                 }
             }
             for(int i=0;i<v;i++){
